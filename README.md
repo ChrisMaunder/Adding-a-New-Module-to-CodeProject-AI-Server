@@ -85,19 +85,19 @@ To ensure these are all in place within the development environment, we need to 
 
 #### For Windows (install.bat)
 
-```cpp
+```cmd
 :: Background Remover :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 call "%sdkScriptsDirPath%\utils.bat" GetFromServer "rembg-models.zip" "models" "Downloading Background Remover models..."
+```
 
-```cpp
 This one doesn't get much simpler: it simply downloads the models from the CodeProject S3 bucket and moves the files into place. The `GetFromServer `function is included in the SDK scripts and takes a filename, a folder name to extract the file into (relative to the current module) and a message
 
 #### For Linux or macOS
 
 The script is essentially the same as the Windows version:
 
-```cpp
+```shell
 # Background Remover :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 getFromServer "rembg-models.zip" "models" "Downloading Background Remover models..."
@@ -117,7 +117,7 @@ The `rembg` module has one main method we need to call, named `remove`. We need 
 
 We'll also create an adapter (which we'll call *rembg\_adapter.py*) for `rembg` that connects the `rembg remove` method with our *codeprojectAI.py* helper module.
 
-```cpp
+```python
 # Import our general libraries
 import sys
 import time
@@ -176,7 +176,7 @@ This is the only code we've added. The `rembg` module has been copied and pasted
 
 This file, in the *BackgroundRemover* folder, instructs the API server in how to launch our new analysis service.
 
-```cpp
+```jsonc
 {
   "Modules": {
 
@@ -223,7 +223,7 @@ The `Platforms `array contains an entry for each platform on which the service c
 
 The file also defines the API routes for the module under the `RouteMaps` section
 
-```cpp
+```jsonc
 {
   "Modules": {
     "ModulesConfig": {
@@ -254,7 +254,7 @@ Path is the API path, in this case *localhost:5000/v1/image/removebackground*. R
 
 In the adapter Python module we wrote, we had the code:
 
-```cpp
+```cmd
 QUEUE_NAME = "removebackground_queue"
 ```
 
@@ -266,7 +266,7 @@ QUEUE_NAME = "removebackground_queue"
 
 A simple JavaScript test harness can be used to demonstrate the new module.
 
-```cpp
+```javascript
   // Assume we have a HTML INPUT type=file control with ID=fileChooser
   var formData = new FormData();
   formData.append('image', fileChooser.files[0]);
@@ -296,12 +296,9 @@ At this point, we have a module, an install script and a test client. Let's give
 3. Launch the server by starting a new debug session in Visual Studio or VS Code.
 4. In Debug, the CodeProject.AI Server Dashboard is automatically launched when run. After the server starts, the dashboard will display the status of all the backend Modules, including the Background Removal module we just added. Notice in the image below, we've deliberately disabled some modules from starting for demonstration purposes.
 
-
-
     ![](https://raw.githubusercontent.com/ChrisMaunder/Adding-a-New-Module-to-CodeProject-AI-Server/master/docs/assets/rembg_started.JPG)
+
 5. Launch the *index.html* file in a browser, choose a file and click **Submit** button. The results should be shown.
-
-
 
     ![Background Remover test.html page](https://raw.githubusercontent.com/ChrisMaunder/Adding-a-New-Module-to-CodeProject-AI-Server/master/docs/assets/test.html.jpg)
 
